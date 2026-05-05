@@ -3,14 +3,12 @@ from rdkit import Chem
 
 def molecular_weight(molecule):
     """Calculates the molecular weight of the given molecule in SMILES format."""
-    mol = Chem.MolFromSmiles(molecule)
-    m_w = Descriptors.MolWt(mol)
+    m_w = Descriptors.MolWt(molecule)
     return m_w
 
 def calculate_solubility(molecule):
     """Calculates the solubility of the molecule."""
-    mol = Chem.MolFromSmiles(molecule)
-    logP = Descriptors.MolLogP(mol)
+    logP = Descriptors.MolLogP(molecule)
     if logP<1:
         return 'very soluble'
     elif logP> 1 and logP<3:
@@ -20,11 +18,10 @@ def calculate_solubility(molecule):
     
 def ro_5(molecule):
     """Applies Lipinski's rule of five to test whether the molecule is orally bioavailable to the human body."""
-    mol = Chem.MolFromSmiles(molecule)
-    hbd_count = Lipinski.NumHDonors(mol)
-    hba_count = Lipinski.NumHAcceptors(mol)
+    hbd_count = Lipinski.NumHDonors(molecule)
+    hba_count = Lipinski.NumHAcceptors(molecule)
     m_w = molecular_weight(molecule)
-    LogP = Descriptors.MolLogP(mol)
+    LogP = Descriptors.MolLogP(molecule)
 
     violations = 0
 
@@ -41,17 +38,16 @@ def ro_5(molecule):
     
 def display_formula(molecule):
     """Creates an image that shows displayed formula of the molecule."""
-    mol = Chem.MolFromSmiles(molecule)
-    img = Draw.MolToImage(mol)
+    img = Draw.MolToImage(molecule)
 
     img.save("molecule.png")
-    print("Image saved as molecule.png")
+    print("Image saved as molecule.png\n")
 
 def ADME(molecule):
-    mol = Chem.MolFromSmiles(molecule)
-    num_rotatable = Lipinski.NumRotatableBonds(mol)
+    """Calculates number of rotatable bonds and Total Polar Surface Area of the molecule."""
+    num_rotatable = Lipinski.NumRotatableBonds(molecule)
 
-    tpsa_value = Descriptors.TPSA(mol)
+    tpsa_value = Descriptors.TPSA(molecule)
     
     print(f"Rotatable bonds: {num_rotatable}")
     print(f"tPSA: {tpsa_value}")
